@@ -1,68 +1,118 @@
 # Business Core Architecture (BCA)
-> **"El negocio como núcleo. Todo lo demás es reemplazable."**
 
-**Business Core Architecture (BCA)** es un estilo arquitectónico orientado a la longevidad del software.  
-Su objetivo es garantizar que la lógica de negocio pueda sobrevivir al cambio constante de frameworks, infraestructuras y tecnologías.
+> **“El negocio como núcleo. Todo lo demás es reemplazable.”**
 
-En BCA, el negocio se modela como un **sistema autónomo**, independiente de decisiones técnicas y completamente portable.
+**Business Core Architecture (BCA)** es un **estilo arquitectónico business-first** para construir software de larga vida, donde la lógica de negocio se encapsula como un activo autónomo y soberano, mientras que frameworks, aplicaciones e infraestructura pueden cambiar sin afectar al negocio.
+
+BCA parte de una premisa simple pero crítica:
+
+> El negocio cambia lentamente.  
+> La tecnología cambia todo el tiempo.  
+> **La arquitectura debe proteger aquello que aporta valor real.**
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Propósito
 
-BCA existe para resolver un problema recurrente en sistemas modernos:
+BCA existe para garantizar que:
 
-> El negocio cambia lentamente, pero la tecnología cambia todo el tiempo.
+- la lógica de negocio sea **independiente de frameworks y aplicaciones**
+- los Business Cores sean **altamente testeables**
+- los cambios tecnológicos no obliguen a reescribir el negocio
+- el sistema pueda migrar de runtime, framework o infraestructura con esfuerzo mínimo
 
-La arquitectura debe proteger aquello que aporta valor real.
+En BCA, el negocio es el **núcleo absoluto** del sistema.  
+Todo lo demás es descartable.
 
 ---
 
 ## 🧠 Principios Clave
 
-BCA se rige por reglas explícitas y no negociables:
+### 🟢 Negocio Primero
 
-1. **Negocio Primero**  
-   La lógica de negocio es el activo principal del sistema.
-
-2. **Core Autónomo**  
-   El Business Core:
-   - no conoce frameworks  
-   - no accede a bases de datos  
-   - no registra logs ni métricas  
-   - no depende de infraestructura  
-
-3. **Signals (Hechos de Negocio)**  
-   El core no ejecuta efectos técnicos.  
-   Produce hechos de negocio que la infraestructura interpreta y materializa.
-
-Estos principios permiten que el negocio permanezca estable mientras la tecnología evoluciona.
+La lógica de negocio es el activo principal del sistema.  
+Toda decisión técnica debe adaptarse al negocio, nunca al revés.
 
 ---
 
-## 🔁 Portabilidad Total (Ejemplo)
+### 🟢 Business Core Autónomo
 
-Este repositorio demuestra la portabilidad del enfoque:
+Un **Business Core** es una **caja negra**:
 
-El **mismo Business Core** se ejecuta simultáneamente en:
-
-- **NestJS** — infraestructura completa
-- **Fastify** — infraestructura ligera
-
-➡️ Sin modificar una sola línea de código de negocio.
+- no conoce frameworks
+- no conoce infraestructura
+- no conoce aplicaciones
+- solo contiene reglas, decisiones y lenguaje de negocio
 
 ---
 
-## 🏗️ Relación con otros estilos
+### 🟢 Dominio = Business Core
 
-BCA toma ideas de arquitecturas conocidas como Clean y Hexagonal,  
-pero define reglas más estrictas para eliminar ambigüedades y proteger el negocio a largo plazo.
+Cada dominio de negocio vive en su **propio Business Core soberano**.
 
-No es un framework ni una metodología, sino un **estilo arquitectónico autocontenido**.
+- los Cores no se importan entre sí
+- no comparten entidades ni reglas
+- pueden evolucionar o migrar de forma independiente
 
 ---
 
-## 👤 Autoría
+### 🟢 La Tríada de Contratos
 
-Business Core Architecture (BCA) fue creada y formalizada por **Leandro Verón**  
-como respuesta a los problemas reales de mantenimiento, migración y evolución de sistemas de larga vida.
+Un Business Core se comunica **exclusivamente** mediante:
+
+- **Input**  
+  Intenciones de negocio expresadas en lenguaje de dominio.
+
+- **Signal**  
+  Hechos o resultados del negocio, sin conocer quién reacciona.
+
+- **Port Público del Core**  
+  Única puerta de entrada al Core.  
+  Recibe Inputs y emite Signals.  
+  Nada externo puede importar Domain o Services.
+
+---
+
+### 🟢 Infraestructura Reactiva
+
+La infraestructura:
+
+- implementa Ports requeridos
+- escucha Signals
+- traduce decisiones de negocio en efectos técnicos
+
+La infraestructura **no toma decisiones de negocio**.
+
+---
+
+## 🧩 Orchestrator
+
+El **Orchestrator** compone uno o más Business Cores para ejecutar un flujo de aplicación.
+
+- conoce únicamente Ports
+- no contiene reglas de negocio
+- no depende de frameworks
+
+Permite cambiar de tecnología sin afectar al negocio.
+
+---
+
+## 🏗️ Estructura Canónica
+
+```txt
+/src
+ ├── core/                      # EL NEGOCIO (incorruptible)
+ │   └── [domain-name]/
+ │       ├── port/              # Port público del Core
+ │       ├── input/             # Inputs (intenciones)
+ │       ├── signal/            # Signals (hechos)
+ │       ├── service/           # Orquestación interna
+ │       ├── domain/            # Modelo y reglas
+ │       └── ports/             # Ports requeridos
+ │
+ ├── orchestrator/              # Composición de Business Cores
+ │
+ └── app/                       # Aplicaciones / Frameworks
+     ├── http/
+     ├── cli/
+     └── listeners/
