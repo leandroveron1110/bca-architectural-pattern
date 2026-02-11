@@ -226,6 +226,7 @@ sin afectar al negocio.
  ├── service     # Orquestación interna
  ├── domain      # Modelo y reglas del negocio
  └── ports       # Ports requeridos (dependencias)
+```
 
 ## 5. Aplicaciones y Frameworks
 
@@ -240,9 +241,9 @@ no contienen lógica de negocio
 Cambiar una aplicación no impacta los Business Cores ni el Orchestrator.
 
 ## 6. Regla de Oro
-> **El negocio debe sobrevivir al cambio tecnológico. [cite_start]Todo lo demás es descartable.** [cite: 116]
+> **El negocio debe sobrevivir al cambio tecnológico. Todo lo demás es descartable.**
 
-[cite_start]BCA no es un framework, es una forma de pensar y construir software donde el negocio es el núcleo absoluto del sistema[cite: 117, 118].
+BCA no es un framework, es una forma de pensar y construir software donde el negocio es el núcleo absoluto del sistema.
 
 
 Business Core Architecture (BCA) no es un framework.
