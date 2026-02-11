@@ -116,3 +116,13 @@ Permite cambiar de tecnología sin afectar al negocio.
      ├── http/
      ├── cli/
      └── listeners/
+```
+
+**Autor:** Leandro Verón
+
+
+## 📚 Documentación
+
+- [Principios de Business Core Architecture](docs/principles.md)
+- [BCA vs Arquitecturas Clásicas](docs/bca-vs-classic-architectures.md)
+- [Glosario Oficial de BCA](docs/glossary.md)
