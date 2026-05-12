@@ -103,7 +103,7 @@ Permite cambiar de tecnología sin afectar al negocio.
 /src
  ├── core/                      # EL NEGOCIO (incorruptible)
  │   └── [domain-name]/
- │       ├── port/              # Port público del Core
+ │       ├── public/              # Port público del Core
  │       ├── input/             # Inputs (intenciones)
  │       ├── signal/            # Signals (hechos)
  │       ├── service/           # Orquestación interna
